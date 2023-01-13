@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+make_request() {
+    curl https://api.openai.com/v1/embeddings \
+        -X POST \
+        -H "Authorization: Bearer $(<.api_key)" \
+        -H "Content-Type: application/json" \
+        -d '{"input": "$*",
+            "model": "text-embedding-ada-002",
+            "encoding_format": "base64"}'
+}
+
+get_embedding() {
+    make_request "$@" |
+        jq '.data[0].embedding' |
+        sed 's/"//g' |
+        base64 -d |
+        od -f
+}
+
+get_embedding 'The food was delicious and the waiter...'
