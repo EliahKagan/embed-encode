@@ -1,0 +1,18 @@
+name: embed-encode
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.11
+  - ipykernel
+  - numpy
+  - openai
+
+  # For openai.embeddings_utils (move above if used directly)
+  - matplotlib
+  - pandas
+  - plotly
+  - scikit-learn
+  - scipy
+  - tenacity

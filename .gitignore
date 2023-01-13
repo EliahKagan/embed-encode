@@ -1,0 +1,8 @@
+# Cached Python bytecode
+__pycache__/
+
+# OpenAI API key
+.api_key
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
