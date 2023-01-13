@@ -2,7 +2,7 @@ The embeddings are float32 (single precision). They only have 7 or 8 significant
 
 If I understood your message in #text-embedding-ada-002 correctly, you're using `openai.embeddings_utils.get_embedding`. That calls `openai.Embedding.create`, and does not pass an `encoding_format` argument. When `openai.Embedding.create` is called without an `encoding_format` argument, it requests the float32 coordinates as a base64 string. base64 encodes binary data losslessly in a text format suitable for transmission over a network. (The "64" in base64 is not conceptually important here.)
 
-`openai.Embedding.create` decodes the base64 string to get the original binary representations of the coordinates, then uses NumPy to recognize that as a flat sequence of float32 values, making a NumPy array of them. Then it converts that NumPy array to a Python `list`, which converts the float32 values to Python `float`. Python's `float` type is float64 (this is, in practice, the case on all architectures). Python itself has no built-in float32 type.
+`openai.Embedding.create` decodes the base64 string to get the original binary representations of the coordinates, then uses NumPy to recognize that as a flat sequence of float32 values, making a NumPy array of them. Then it converts that NumPy array to a Python `list`, which converts the float32 values to Python `float`. Python's `float` type is in practice always float64 (double precision). Python itself has no built-in float32 type.
 
 That program logic appears in this code from the `openai.Embedding.create` method, in https://github.com/openai/openai-python/blob/main/openai/api_resources/embedding.py:
 ```python
