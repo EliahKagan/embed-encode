@@ -8,6 +8,7 @@ dependencies:
   - ipykernel
   - numpy
   - openai
+  - requests
 
   # For openai.embeddings_utils (move above if used directly)
   - matplotlib
