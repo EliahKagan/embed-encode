@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: 0BSD -->
+
 The embeddings are float32 (single precision). They only have 7 or 8 significant figures, so you probably aren't benefiting from the extra digits, whose presence or absence mostly reflect different ways of converting between data types. But you *can* get them if you want, even when you're not using the OpenAI Python library. More specifically, you can get the embeddings as flat sequences of binary float32 values--which is what the Python library is doing--and use them however you like.
 
 If I understood your message in #text-embedding-ada-002 correctly, you're using `openai.embeddings_utils.get_embedding`. That calls `openai.Embedding.create`, and does not pass an `encoding_format` argument. When `openai.Embedding.create` is called without an `encoding_format` argument, it requests the float32 coordinates as a base64 string. base64 encodes binary data losslessly in a text format suitable for transmission over a network. (The "64" in base64 is not conceptually important here.)
