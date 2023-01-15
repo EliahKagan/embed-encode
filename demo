@@ -11,7 +11,7 @@
 #
 # This script is just a demonstration. It is vulnerable to JSON injection and
 # thus unsuitable for use on untrusted input: if the input contains a '"'
-# character, then waht comes after it can specify arbitrary JSON. This could be
+# character, then what comes after it can specify arbitrary JSON. This could be
 # exploited in undesirable ways, such as to specify a more expensive model.
 #
 # The other reason the code in this script probably couldn't be used unchanged
