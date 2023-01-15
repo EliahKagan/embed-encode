@@ -1,21 +1,56 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: 0BSD
 
+# Demo of retrieving a base64-encoded text embedding from the OpenAI API.
+#
+# Usage:
+#
+#   ./demo [TEXT_TO_EMBED]
+#
+# If the text to embed is omitted, a sample phrase is used instead.
+#
+# This script is just a demonstration. It is vulnerable to JSON injection and
+# thus unsuitable for use on untrusted input: if the input contains a '"'
+# character, then waht comes after it can specify arbitrary JSON. This could be
+# exploited in undesirable ways, such as to specify a more expensive model.
+#
+# The other reason the code in this script probably couldn't be used unchanged
+# in production is that it assumes the request succeeds. If the request fails,
+# whatever it returned is nonetheless treated as a sequence of coordinates.
+
+set -e
+
+api_key() {
+    local key="$OPENAI_API_KEY"
+    [ -n "$key" ] || key="$(<.api_key)" # Fall back to reading .api_key.
+    printf '%s\n' "$key"
+}
+
+# Compare https://beta.openai.com/docs/guides/embeddings/how-to-get-embeddings.
+# (In "Example: Getting embeddings", select "curl" instead of "python".)
 make_request() {
     curl https://api.openai.com/v1/embeddings \
         -X POST \
-        -H "Authorization: Bearer $(<.api_key)" \
+        -H "Authorization: Bearer $(api_key)" \
         -H "Content-Type: application/json" \
         -d '{"input": "$*",
             "model": "text-embedding-ada-002",
             "encoding_format": "base64"}'
 }
 
+# Requires curl, as well as the jq and base64 commands, to be installed.
+# If you want raw binary data, remove "od -f" (and the "|" on the line above).
 get_embedding() {
-    make_request "$@" |
-        jq '.data[0].embedding' |
-        sed 's/"//g' |
-        base64 -d |
-        od -f
+    make_request "$@" |            # Receive JSON response (assumes success).
+        jq '.data[0].embedding' |  # Parse out the embedding from the JSON.
+        sed 's/"//g' |             # Remove the quotation marks.
+        base64 -d |                # Decode the base64 string into binary data.
+        od -f                      # Show the float32 coordinates as text.
 }
 
-get_embedding 'The food was delicious and the waiter...'
+if (($# == 0)); then
+    # No arguments, so use the same example phrase shown in the OpenAI docs.
+    get_embedding 'The food was delicious and the waiter...'
+else
+    get_embedding "$@"
+fi
