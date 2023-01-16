@@ -23,7 +23,8 @@ public class Main {
 
         var embedding = embed(text);
         System.out.println(embedding);
-        System.out.format("has NaN = %s%n", hasNaN(embedding));
+        System.out.format("has NaN?  %b%n", hasNaN(embedding));
+        System.out.format("has infinity?  %b%n", hasInfinity(embedding));
         System.out.format("norm squared = %f%n", normSquared(embedding));
     }
 
@@ -41,6 +42,7 @@ public class Main {
     private static List<Float> embed(String text) throws IOException {
         var result = queryApi(text);
         var base64 = result.data().get(0).embedding();
+        System.out.println(base64); // FIXME: Remove after debugging.
         var bytes = Base64.getDecoder().decode(base64);
 
         var buffer = ByteBuffer.wrap(bytes);
@@ -85,6 +87,10 @@ public class Main {
 
     private static boolean hasNaN(List<Float> vector) {
         return vector.stream().anyMatch(x -> x.isNaN());
+    }
+
+    private static boolean hasInfinity(List<Float> vector) {
+        return vector.stream().anyMatch(x -> x.isInfinite());
     }
 
     private static float normSquared(List<Float> vector) {
