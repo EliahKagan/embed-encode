@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -20,22 +21,10 @@ public class Main {
         var text = getTextToEmbed(args);
         System.out.println(text);
 
-        var result = queryApi(text);
-        var base64 = result.data().get(0).embedding();
-        var bytes = Base64.getDecoder().decode(base64);
-        var buffer = ByteBuffer.wrap(bytes); // Endianness?
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
-
-        var coordinates = IntStream.range(0, DIMENSION)
-            .mapToObj(buffer::getFloat)
-            .toList();
-
-        System.out.println(coordinates);
-
-        //var coordinates = new float[DIMENSION];
-        //for (var index = 0; index < coordinates.length; ++index) {
-        //    coordinates[index] = buffer.getFloat();
-        //}
+        var embedding = embed(text);
+        System.out.println(embedding);
+        System.out.format("has NaN = %s%n", hasNaN(embedding));
+        System.out.format("norm squared = %f%n", normSquared(embedding));
     }
 
     private static int DIMENSION = 1536;
@@ -47,6 +36,19 @@ public class Main {
         return args.length == 0
             ? "The food was delicious and the waiter..." // As in OpenAI docs.
             : String.join(" ", args);
+    }
+
+    private static List<Float> embed(String text) throws IOException {
+        var result = queryApi(text);
+        var base64 = result.data().get(0).embedding();
+        var bytes = Base64.getDecoder().decode(base64);
+
+        var buffer = ByteBuffer.wrap(bytes);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+
+        return IntStream.range(0, DIMENSION)
+            .mapToObj(buffer::getFloat)
+            .toList();
     }
 
     private static Result queryApi(String text) throws IOException {
@@ -81,5 +83,16 @@ public class Main {
         return key.strip();
     }
 
-    //private static final ObjectMapper _mapper = new ObjectMapper();
+    private static boolean hasNaN(List<Float> vector) {
+        return vector.stream().anyMatch(x -> x.isNaN());
+    }
+
+    private static float normSquared(List<Float> vector) {
+        var computed = vector.stream()
+            .mapToDouble(x -> x)
+            .map(x -> x * x)
+            .sum();
+
+        return (float)computed;
+    }
 }
