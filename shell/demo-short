@@ -7,7 +7,7 @@ make_request() {
         -X POST \
         -H "Authorization: Bearer $(<../.api_key)" \
         -H "Content-Type: application/json" \
-        -d '{"input": "$*",
+        -d '{"input": "'"$*"'",
             "model": "text-embedding-ada-002",
             "encoding_format": "base64"}'
 }
