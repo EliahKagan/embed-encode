@@ -29,6 +29,8 @@ api_key() {
 # Compare https://beta.openai.com/docs/guides/embeddings/how-to-get-embeddings.
 # (In "Example: Getting embeddings", select "curl" instead of "python".)
 make_request() {
+    printf '%s\n\n' "$*" >&2
+
     curl https://api.openai.com/v1/embeddings \
         -X POST \
         -H "Authorization: Bearer $(api_key)" \
@@ -36,6 +38,8 @@ make_request() {
         -d '{"input": "$*",
             "model": "text-embedding-ada-002",
             "encoding_format": "base64"}'
+
+    printf '\n' >&2
 }
 
 # Requires curl, as well as the jq and base64 commands, to be installed.
