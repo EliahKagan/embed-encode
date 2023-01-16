@@ -22,7 +22,7 @@ set -e
 
 api_key() {
     local key="$OPENAI_API_KEY"
-    [ -n "$key" ] || key="$(<.api_key)" # Fall back to reading .api_key.
+    [ -n "$key" ] || key="$(<../.api_key)" # Fall back to reading .api_key.
     printf '%s\n' "$key"
 }
 
