@@ -25,20 +25,22 @@ interface](https://beta.openai.com/docs/api-reference/embeddings?lang=curl), as
 well as when accessing it through *most*
 [libraries](https://beta.openai.com/docs/libraries/python-bindings), each
 embedding is encoded as a [JSON](https://en.wikipedia.org/wiki/JSON) array of
-numbers. Although the embeddings are originally in binary, and they will be in
-binary again when we use them, they are, in effect, transmitted in decimal.
+numbers. Although the embeddings are originally in
+[binary](https://en.wikipedia.org/wiki/Binary_number), and they will be in
+binary again when we use them, they are, in effect, transmitted in
+[decimal](https://en.wikipedia.org/wiki/Decimal).
 
 I *believe* they are always represented with sufficient precision in this
 process. Since they are floating point values, we [count from the first nonzero
 digit](https://en.wikipedia.org/wiki/Significand) to determine the precision of
 a representation. Counting this way, most coordinates from the API endpoint are
 transmitted with 8 figures. Some have fewer, but that's probably just when the
-eighth digit would be a 0. Less than 2% of floating point values (in the whole
-range of float32) need 9 digits to support exact round-trip conversion. My
-guess is that, if one looks for such numbers in the JSON results, one may find
-them.
+eighth digit would be a 0. [Less than 2%](https://stackoverflow.com/a/60790121)
+of floating point values (in the whole range of float32) need 9 digits to
+support exact round-trip conversion. My guess is that, if one looks for numbers
+with 9-digit significands in the JSON results, one may find them.
 
-Of at least equal importance is that embeddings probably don't need full
+Of equal or greater importance is that embeddings probably don't need full
 float32 precision:
 
 - Embeddings are inherently fuzzy.
@@ -55,10 +57,10 @@ float32 precision:
   [nondeterministic](https://pytorch.org/docs/stable/notes/randomness.html).
 
   I'm not sure about the other OpenAI embedding models. But I've observed that
-  [text-embedding-ada-002](https://beta.openai.com/docs/guides/embeddings/second-generation-models)--which
+  [text-embedding-ada-002](https://beta.openai.com/docs/guides/embeddings/second-generation-models)—which
   is the [most
   important](https://openai.com/blog/new-and-improved-embedding-model/) of them
-  as of this writing--will occasionally return different embeddings of the same
+  as of this writing—will occasionally return different embeddings of the same
   text, even when the embedding is requested in exactly the same way. (I wish I
   had a good citation for this, which is interesting in its own right.)
 
@@ -84,9 +86,9 @@ If the decimal value had enough precision to uniquely represent the float32
 value, then the float64 value obtained directly from the decimal value is
 *slightly farther away* from the original float32 value than if it had been
 parsed as float32 and *then* converted to float64. Thus, while it is rare that
-this would matter in practice, the rounding error is may be *slightly*
-decreased by converting values that originated as float32 back to float32
-before converting them to float64.
+this would matter in practice, the rounding error may be *slightly* decreased
+by converting values that originated as float32 back to float32 before
+converting them to float64.
 
 The reason it is rare that it would matter is that we are talking about
 differences less than the precision of float32. But if that is likely to
@@ -125,7 +127,8 @@ different float64):
 
 Note that the difference there is very small.
 
-Converting the decimal representation to float32 and converting *that* to float64 gives:
+Converting the decimal representation to float32 and converting *that* to
+float64 gives:
 
 ```python
 >>> float(np.float32('0.033652876'))
@@ -144,7 +147,7 @@ library](https://github.com/openai/openai-python) is similar to, but **not
 quite the same as**, the above scenario. The difference is that the library
 processes the embeddings in float32 not due to *parsing* them as float32, but
 because it uses the API endpoint in a way that causes it to receive float32
-values in the first place--the values are not represented in decimal during
+values in the first place—the values are not represented in decimal during
 transmission from the API endpoint. It achieves this by passing `base64` as the
 value of the optional `encoding_format` argument.
 
@@ -179,14 +182,13 @@ There are two ways to use the OpenAI Python library to get embeddings:
 versions](https://github.com/openai/openai-python/pull/146) of all those
 functions, which I am omitting for simplicity.)
 
-Either way,
-`openai.Embedding.create` is ultimately used. The `get_embedding` and
-`get_embeddings` functions call `openai.Embedding.create`. They do not pass an
-`encoding_format` argument.
+Either way, `openai.Embedding.create` is ultimately used. The `get_embedding`
+and `get_embeddings` functions call `openai.Embedding.create`. They do not pass
+an `encoding_format` argument.
 
 When `openai.Embedding.create` is called without an `encoding_format`
-argument--whether because you used those higher level functions, or because you
-called it directly and used only officially documented arguments--it requests
+argument—whether because you used those higher level functions, or because you
+called it directly and used only officially documented arguments—it requests
 the float32 coordinates as a [Base64](https://en.wikipedia.org/wiki/Base64)
 string. Base64 encodes binary data losslessly in a text format suitable for
 transmission over a network. Note that the "64" in base64 is not conceptually
@@ -195,9 +197,10 @@ between float32 and float64.
 
 `openai.Embedding.create` decodes the Base64 string to get the original binary
 representations of the coordinates, then uses [NumPy](https://numpy.org/) to
-recognize that as a flat sequence of float32 values, making a NumPy array of
-them. Then it converts that NumPy array to a Python `list`, which converts the
-float32 values to Python `float`. As [mentioned
+recognize that as a [flat
+sequence](https://www.fluentpython.com/lingo/#flat_sequence) of float32 values,
+making a NumPy array of them. Then it converts that NumPy array to a Python
+`list`, which converts the float32 values to Python `float`. As [mentioned
 above](#Trying-it-out-in-the-Python-REPL), Python's `float` type is in practice
 always float64.
 
@@ -244,7 +247,7 @@ currently does not, or if it is only to avoid committing OpenAI to continuing
 to offer `encoding_format` in the future.
 
 If the model doesn't support Base64 encoding, then the API endpoint would fall
-back to giving the `embedding` value as a JSON array and, due to the parsing
+back to giving the `embedding` value as a JSON array. Then, due to the parsing
 logic in the
 [`EngineAPIResource`](https://github.com/openai/openai-python/blob/v0.26.1/openai/api_resources/abstract/engine_api_resource.py#L15)
 base class,
