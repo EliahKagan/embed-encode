@@ -8,11 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0f84d86-f2b0-4b83-aaf1-22582e8bca97" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/VectorQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/ada-002.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../python/ada-002.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Embedder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Embedder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,8 +49,11 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "last_opened_file_path": "C:/Users/ek/.m2/repository/com/squareup/okhttp3/okhttp/4.10.0/okhttp-4.10.0-sources.jar",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+    "settings.editor.selected.configurable": "reference.settings.ide.settings.spelling"
   }
 }]]></component>
   <component name="RunManager">
@@ -77,7 +76,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b0f84d86-f2b0-4b83-aaf1-22582e8bca97" name="Changes" comment="" />
