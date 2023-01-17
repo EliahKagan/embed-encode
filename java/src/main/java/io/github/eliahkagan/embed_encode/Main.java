@@ -25,10 +25,10 @@ public class Main {
         System.out.println(embedding);
         System.out.format("has NaN?  %b%n", hasNaN(embedding));
         System.out.format("has infinity?  %b%n", hasInfinity(embedding));
-        System.out.format("norm squared = %f%n", normSquared(embedding));
+        System.out.format("norm squared = %.8f%n", normSquared(embedding));
     }
 
-    private static int DIMENSION = 1536;
+    private static final int DIMENSION = 1536;
 
     private static final MediaType JSON
         = MediaType.get("application/json; charset=utf-8");
@@ -45,11 +45,12 @@ public class Main {
         System.out.println(base64); // FIXME: Remove after debugging.
         var bytes = Base64.getDecoder().decode(base64);
 
-        var buffer = ByteBuffer.wrap(bytes);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        var byteBuffer = ByteBuffer.wrap(bytes);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        var floatBuffer = byteBuffer.asFloatBuffer();
 
         return IntStream.range(0, DIMENSION)
-            .mapToObj(buffer::getFloat)
+            .mapToObj(floatBuffer::get)
             .toList();
     }
 
