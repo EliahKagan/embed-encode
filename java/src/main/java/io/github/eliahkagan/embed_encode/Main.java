@@ -8,21 +8,13 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // Determine what text we are going to embed.
         var text = getTextToEmbed(args);
         System.out.println(text);
 
-        // Embed it, and report the result.
         var embedding = new Embedder(getApiKey()).embed(text);
-        System.out.println(embedding.base64());
-        System.out.println(embedding.coordinates());
-        reportDetails(embedding.coordinates());
-
-        // Convert it to double (float64), for comparison to Python.
-        var doubles = embedding.coordinates().stream()
-            .map(Double::valueOf)
-            .toList();
-        System.out.println(doubles);
+        showEmbedding(embedding);
+        reportPlausibilityDetails(embedding.coordinates());
+        reportDoubles(embedding.coordinates());
     }
 
     /**
@@ -57,6 +49,19 @@ public class Main {
     }
 
     /**
+     * Print out the Base64 string and the List of floats, on separate lines.
+     * <p>
+     *   {@code Base64Embedding.toString} formats them differently, which I
+     *   don't want to change, because it is good for debugging.
+     * </p>
+     * @param embedding  The Base64 and {@code List<Float>} data to print.
+     */
+    private static void showEmbedding(Base64Embedding embedding) {
+        System.out.println(embedding.base64());
+        System.out.println(embedding.coordinates());
+    }
+
+    /**
      * Report details useful to checking if the embedding makes sense.
      * <p>
      *   Embeddings are real-valued vectors, and thus have no NaN or infinite
@@ -64,12 +69,22 @@ public class Main {
      *   norm, and thus its square, may differ slightly from 1, due to
      *   rounding error).
      * </p>
-     * @param coordinates The float coordinates of the embedding.
+     * @param coordinates  The float coordinates of the embedding.
      */
-    private static void reportDetails(List<Float> coordinates) {
+    private static void reportPlausibilityDetails(List<Float> coordinates) {
         var vecQuery = new VectorQuery(coordinates);
         System.out.format("has NaN?  %b%n", vecQuery.hasNaN());
         System.out.format("has infinity?  %b%n", vecQuery.hasInfinity());
         System.out.format("norm squared = %.8f%n", vecQuery.normSquared());
+    }
+
+    /**
+     * Convert coordinates to a List of doubles, show them, and save as JSON.
+     * <p>This is to compare to Python results. See python/ada-002.ipynb.</p>
+     * @param coordinates  The float coordinates of the embedding.
+     */
+    private static void reportDoubles(List<Float> coordinates) {
+        var doubles = new VectorQuery(coordinates).doubles();
+        System.out.println(doubles);
     }
 }

@@ -29,5 +29,12 @@ final class VectorQuery {
         return (float)computed;
     }
 
+    /** Gets the coordinates as double-precision values. */
+    public List<Double> doubles() {
+        return _coordinates.stream()
+            .map(Double::valueOf)
+            .toList();
+    }
+
     private final List<Float> _coordinates;
 }
