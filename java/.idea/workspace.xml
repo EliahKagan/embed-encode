@@ -8,9 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0f84d86-f2b0-4b83-aaf1-22582e8bca97" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/java-embeddings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/ada-002.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../python/ada-002.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/python-embeddings.json" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../python/Pipfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
