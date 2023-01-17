@@ -2,14 +2,17 @@
 
 # Why embeddings via the Python library show more digits
 
-*You probably aren't benefiting from the extra digits, whose presence or
-absence mostly reflect different ways of converting between data types. But the
-Python behavior can be achieved in other languages, if you want it.*
+You probably aren't benefiting from the extra digits, whose presence or absence
+mostly reflect different ways of converting between data types. But the Python
+library's behavior can be achieved in other languages, if you want it.
 
-The coordinates in most text embeddings are
+## Why you probably don't need the extra digits
+
+The coordinates in most text embeddings, including all embeddings from OpenAI
+embedding models, are
 [float32](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
-(single precision). The OpenAI embedding models work this way. So coordinates
-in the embeddings they produce have 6 to 9 significant figures, though [rarely
+(single precision). So their coordinates have 6 to 9 significant figures,
+though [rarely
 9](https://stackoverflow.com/questions/60790120/which-single-precision-floating-point-numbers-need-9-significant-decimal-digits).
 
 When using the OpenAI embeddings API endpoint explicitly via its [documented
@@ -25,31 +28,127 @@ process. Since they are floating point values, we [count from the first nonzero
 digit](https://en.wikipedia.org/wiki/Significand) to determine the precision of
 a representation. Counting this way, most coordinates from the API endpoint are
 transmitted with 8 figures. Some have fewer, but that's probably just when the
-trailing digit would be a 0. Less than 2% of floating point values (in the
-whole range of float32) need 9 digits to support exact round-trip conversion,
-so we shouldn't expect to see that many very often. My guess is that, if one
-looks hard for such numbers in the JSON results, one may find them.
+eighth digit would be a 0. Less than 2% of floating point values (in the whole
+range of float32) need 9 digits to support exact round-trip conversion. My
+guess is that, if one looks for such numbers in the JSON results, one may find
+them.
 
 Of at least equal importance is that embeddings probably don't need full
-float32 precision. Machine learning models, even in the absence of deliberate
-or desired randomness, are often
-[nondeterministic](https://pytorch.org/docs/stable/notes/randomness.html). I'm
-not sure about the other OpenAI embedding models, but `text-embedding-ada-002`
-(the most important of them as of this writing) will occasionally return
-different embeddings of the same text, even when the embedding is requested in
-exactly the same way. (I wish I had a strong citation for this, which is
-interesting in its own right, but so far, all I have is personal experience.)
+float32 precision:
 
-Nonetheless, it remains interesting that the OpenAI Python library gives
-results that, when printed, show more decimal digits, even compared to
-accessing the API endpoint explicitly in Python using Requests. This behavior
-is worth explaining--even though it could change in the future. It turns out to
-relate to an interesting optimization that the API endpoint facilitates and the
-OpenAI Python library takes advantage of: the `encoding_format` argument.
+- Embeddings are inherently fuzzy.
+
+  Two texts that are nearly identical strings, in such a way that they have
+  same meaning, will usually have at least slightly different embeddings. When
+  the difference is small, this is not a problem. But that difference, even
+  when it is small, and even when it is due to completely irrelevant changes in
+  the text, is often a lot bigger than the distance between adjacent float32
+  values.
+
+- Machine learning models, even in the absence of deliberate or desired
+  randomness, are often
+  [nondeterministic](https://pytorch.org/docs/stable/notes/randomness.html).
+
+  I'm not sure about the other OpenAI embedding models, but I've observed that
+  [text-embedding-ada-002](https://beta.openai.com/docs/guides/embeddings/second-generation-models),
+  the [most important of them as of this
+  writing](https://openai.com/blog/new-and-improved-embedding-model/), will
+  occasionally return different embeddings of the same text, even when the
+  embedding is requested in exactly the same way. (I wish I had a good citation
+  for this, which is interesting in its own right.)
+
+## What the extra digits represent
+
+Suppose we receive a decimal representations of a
+[float32](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
+(single precision) value, but we will ultimately be calculating with it in
+[float64](https://en.wikipedia.org/wiki/Double-precision_floating-point_format)
+(double precision). Suppose further that the float32 value is represented in
+decimal, with enough digits that, when parsed back to float32, the original and
+round-tripped values are exactly equal. If the decimal representation is
+instead parsed as float64, will that also be equal to the original number?
+
+Surprisingly, *no*. A float32 value round-trips perfectly when no other float32
+value is closer to the decimal value used to represent it. But there will
+usually be a closer float64 value. That float64 value is a more exact
+representation *of the intermediate decimal value*.
+
+If the decimal value had enough precision to uniquely represent the float32
+value, then the float64 value obtained directly from the decimal value is
+*slightly farther away* from the original float32 value than if it had been
+parsed as float32 and *then* converted to float64. Thus, while it is rare that
+this would matter in practice, the rounding error is may be *slightly*
+decreased by converting values that originated a float32 back to float32 before
+converting them to float64.
+
+The reason it is rare that it would matter is that we are talking about
+differences less than the precision of float32. But if that is likely to
+matter, then we need to fix the problem of using float32 in the first place,
+instead!
+
+If we follow that two-step process and then represent those float64 values in
+decimal, we see extra digits. The extra digits correspond to the difference
+between the decimal representations of the float32 values and the original
+float32 values themselves. Note that this assumes perfect round-tripping;
+otherwise, we have no way to know the original float32 values exactly.
+
+An example may be illustrative. Python has no built-in float32 type; its
+`float` type is, in practice, float64 on all architectures. But
+[NumPy](https://pypi.org/project/numpy/) does have float32. Suppose we have a
+float32 value represented as 0.033652876. This is a round-trip representation:
+
+```python
+>>> import numpy as np
+>>> np.float32('0.033652876')
+0.033652876
+```
+
+Like all round-trip representations of a float32, it is also a round-trip
+representation of a float64 (though, as explained above, this is a slightly
+different float64):
+
+```python
+>>> float('0.033652876')
+0.033652876
+>>> float('0.033652876') - np.float32('0.033652876')
+4.2755698981267187e-10
+```
+
+Note that the difference there is very small.
+
+Converting the decimal representation to float32 and converting *that* to float64 gives:
+
+```python
+>>> float(np.float32('0.033652876'))
+0.03365287557244301
+>>> float(np.float32('0.033652876')) - np.float32('0.033652876')
+0.0
+```
+
+Notice the extra digits.
+
+## What the OpenAI Python library does
+
+The reason you get extra digits in the decimal representations of `float`s
+obtained using the OpenAI Python library is similar to, but **not quite the
+same as**, the above scenario. The difference is that the library processes the
+embeddings in float32 not due to *parsing* them as float32, but because it uses
+the API in a special way that causes it to have float32 values in the first
+place--the values are not represented in decimal during transmission from the
+API endpoint.
 
 ---
 
-*Unrevised (the revised material is above the immediately preceding `hr`):*
+Nonetheless, it remains interesting that the [OpenAI Python
+library](https://github.com/openai/openai-python) gives results that, when
+printed, show more decimal digits, even compared to accessing the API endpoint
+explicitly in Python using
+[Requests](https://requests.readthedocs.io/en/latest/). This behavior is worth
+explaining--even though it could change in the future. It turns out to relate
+to an interesting optimization that the API endpoint facilitates and the OpenAI
+Python library takes advantage of: the `encoding_format` argument.
+
+***Unrevised (the revised material is above the immediately preceding `hr`):***
 
 More specifically, you can get the embeddings as flat sequences of binary
 float32 values--which is what the Python library is doing--and use them however
