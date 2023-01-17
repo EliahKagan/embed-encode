@@ -55,7 +55,7 @@ public class Main {
     }
 
     /**
-     * Print out the Base64 string and the List of floats, on separate lines.
+     * Prints out the Base64 string and the List of floats, on separate lines.
      * <p>
      *   {@code Base64Embedding.toString} formats them differently, which I
      *   don't want to change, because it is good for debugging.
@@ -68,7 +68,7 @@ public class Main {
     }
 
     /**
-     * Report details useful to checking if the embedding makes sense.
+     * Reports details useful to checking if the embedding makes sense.
      * <p>
      *   Embeddings are real-valued vectors, and thus have no NaN or infinite
      *   coordinates. Furthermore, OpenAI embeddings are normalized (though the
@@ -85,7 +85,7 @@ public class Main {
     }
 
     /**
-     * Convert coordinates to a List of doubles, show them, and save as JSON.
+     * Converts coordinates to a List of doubles, show them, and save as JSON.
      * <p>This is to compare to Python results. See python/ada-002.ipynb.</p>
      * @param coordinates  The float coordinates of the embedding.
      * @throws IOException  If the json file cannot be written.

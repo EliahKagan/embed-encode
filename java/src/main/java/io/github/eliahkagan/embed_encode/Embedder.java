@@ -23,7 +23,7 @@ import java.util.List;
  */
 final class Embedder {
     /**
-     * Create a new Embedder using the given API key as its bearer token.
+     * Creates a new Embedder using the given API key as its bearer token.
      * @param apiKey  The OpenAI API key. (Should start with "sk-".)
      */
     public Embedder(String apiKey) {

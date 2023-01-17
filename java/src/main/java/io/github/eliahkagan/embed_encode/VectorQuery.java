@@ -4,7 +4,7 @@ import java.util.List;
 
 /** Wrapper for a vector (List of floats), supporting several operations. */
 final class VectorQuery {
-    /** Wrap the given coordinates. */
+    /** Wraps the given coordinates. */
     public VectorQuery(List<Float> coordinates) {
         _coordinates = coordinates;
     }
