@@ -78,10 +78,10 @@ public class Main {
      * @param coordinates  The float coordinates of the embedding.
      */
     private static void reportPlausibilityDetails(List<Float> coordinates) {
-        var vecQuery = new VectorQuery(coordinates);
-        System.out.format("has NaN?  %b%n", vecQuery.hasNaN());
-        System.out.format("has infinity?  %b%n", vecQuery.hasInfinity());
-        System.out.format("norm squared = %.8f%n", vecQuery.normSquared());
+        var vecOps = new VectorOperations(coordinates);
+        System.out.format("has NaN?  %b%n", vecOps.hasNaN());
+        System.out.format("has infinity?  %b%n", vecOps.hasInfinity());
+        System.out.format("norm squared = %.8f%n", vecOps.normSquared());
     }
 
     /**
@@ -90,8 +90,9 @@ public class Main {
      * @param coordinates  The float coordinates of the embedding.
      * @throws IOException  If the json file cannot be written.
      */
-    private static void reportDoubles(List<Float> coordinates) throws IOException {
-        var doubles = new VectorQuery(coordinates).doubles();
+    private static void
+    reportDoubles(List<Float> coordinates) throws IOException {
+        var doubles = new VectorOperations(coordinates).doubles();
         System.out.println(doubles);
 
         var printer = new DefaultPrettyPrinter()

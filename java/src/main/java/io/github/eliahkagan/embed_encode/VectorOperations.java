@@ -3,9 +3,9 @@ package io.github.eliahkagan.embed_encode;
 import java.util.List;
 
 /** Wrapper for a vector (List of floats), supporting several operations. */
-final class VectorQuery {
+final class VectorOperations {
     /** Wraps the given coordinates. */
-    public VectorQuery(List<Float> coordinates) {
+    public VectorOperations(List<Float> coordinates) {
         _coordinates = coordinates;
     }
 
