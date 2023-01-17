@@ -8,20 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0f84d86-f2b0-4b83-aaf1-22582e8bca97" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../compare/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../compare/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../compare/check.rb" beforeDir="false" afterPath="$PROJECT_DIR$/../compare/check.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/ek.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/ek.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Embedder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Embedder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/RequestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/RequestData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/VectorOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/VectorOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../python/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../python/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../shell/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../shell/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../shell/demo" beforeDir="false" afterPath="$PROJECT_DIR$/../shell/demo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../python/several-models.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../python/several-models.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../python/tokens.py" beforeDir="false" afterPath="$PROJECT_DIR$/../python/tokens.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
