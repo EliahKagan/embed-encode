@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: 0BSD -->
+
 Base64-encoded OpenAI embeddings **in Python**.
 
 Uses [Requests](https://requests.readthedocs.io/en/latest/).

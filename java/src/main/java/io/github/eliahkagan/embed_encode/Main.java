@@ -1,3 +1,16 @@
+// Copyright (c) 2023 Eliah Kagan
+//
+// Permission to use, copy, modify, and/or distribute this software for any
+// purpose with or without fee is hereby granted.
+//
+// THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+// WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+// SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+// WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+// OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+// CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
 package io.github.eliahkagan.embed_encode;
 
 import com.fasterxml.jackson.core.util.DefaultIndenter;
@@ -12,7 +25,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * This program embeds some text, showing Base64 and coordinates.
+ *
+ * <p>The following output is displayed:</p>
+ * <ul>
+ *   <li>The text to be embedded.</li>
+ *   <li>The retrieved Base64 string that encodes the embedding.</li>
+ *   <li>The embedding, as a {@code List<Float>}.</li>
+ *   <li>Some stats to help check if the result is plausibly correct.</li>
+ *   <li>The embedding, converted to a {@code List<Double>}.</li>
+ * </ul>
+ *
+ * <p>
+ *   Furthermore, the {@code List<Double>} is dumped as JSON, to
+ *   {@code java-embedding.json}, for comparison to data produced by the OpenAI
+ *   Python library.
+ * </p>
+ */
 public class Main {
+    /**
+     * Program entry point.
+     * @param args  Joined to produce custom text to embed, if supplied.
+     * @throws IOException  If the embedding request fails or can't be tried
+     *                      (such as if the OpenAI API key can't be found).
+     */
     public static void main(String[] args) throws IOException {
         var text = getTextToEmbed(args);
         System.out.println(text);

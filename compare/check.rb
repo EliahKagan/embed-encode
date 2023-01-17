@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# SPDX-License-Identifier: 0BSD
+
 $VERBOSE = true
 
 require 'json'

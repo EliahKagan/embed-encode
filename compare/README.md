@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: 0BSD -->
+
 Comparison of float64-valued embeddings from Python and Java.
 
 Note that this only compares them for equality to double precision. That should

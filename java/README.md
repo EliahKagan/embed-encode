@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: 0BSD -->
+
 Base64-encoded OpenAI embeddings **in Java**.
 
 Uses [OkHttp](https://square.github.io/okhttp/) and
