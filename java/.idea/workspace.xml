@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b0f84d86-f2b0-4b83-aaf1-22582e8bca97" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/VectorQuery.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Base64Embedding.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/RequestData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/RequestData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/eliahkagan/embed_encode/Result.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../python/ada-002.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../python/ada-002.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +23,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -43,15 +47,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ek/.m2/repository/com/squareup/okhttp3/okhttp/4.10.0/okhttp-4.10.0-sources.jar&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Users/ek/.m2/repository/com/squareup/okhttp3/okhttp/4.10.0/okhttp-4.10.0-sources.jar",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.github.eliahkagan.embed_encode.Main" />

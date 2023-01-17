@@ -22,10 +22,13 @@ public class Main {
         System.out.println(text);
 
         var embedding = embed(text);
-        System.out.println(embedding);
-        System.out.format("has NaN?  %b%n", hasNaN(embedding));
-        System.out.format("has infinity?  %b%n", hasInfinity(embedding));
-        System.out.format("norm squared = %.8f%n", normSquared(embedding));
+        System.out.println(embedding.base64());
+        System.out.println(embedding.coordinates());
+
+        var vecQuery = new VectorQuery(embedding.coordinates());
+        System.out.format("has NaN?  %b%n", vecQuery.hasNaN());
+        System.out.format("has infinity?  %b%n", vecQuery.hasInfinity());
+        System.out.format("norm squared = %.8f%n", vecQuery.normSquared());
     }
 
     /** Expected dimension for text-embedding-ada-002. */
@@ -51,16 +54,15 @@ public class Main {
     }
 
     /**
-     * Produces a text embedding, represented as a List of 32-bit floats.
+     * Produces a text embedding.
      * @param text  The text to embed.
-     * @return The embedding, as a List of coordinates represented as floats.
+     * @return The embedding, as Base64 and as 32-bit float coordinates.
      * @throws IOException  If the request fails or can't be attempted.
      */
-    private static List<Float> embed(String text) throws IOException {
+    private static Base64Embedding embed(String text) throws IOException {
         // Query the OpenAI API for binary data (transmitted as Base64).
         var result = queryApi(text);
         var base64 = result.data().get(0).embedding();
-        System.out.println(base64); // FIXME: Remove after debugging.
         var bytes = Base64.getDecoder().decode(base64);
 
         // View the raw binary data as floats (IEEE 754 binary32).
@@ -74,7 +76,8 @@ public class Main {
         while (floatBuffer.hasRemaining()) {
             embedding.add(floatBuffer.get());
         }
-        return embedding;
+
+        return new Base64Embedding(base64, embedding);
     }
 
     /**
@@ -140,25 +143,5 @@ public class Main {
             actualDimension);
 
         throw new AssertionError(message);
-    }
-
-    /** Checks if any coordinate of a vector is NaN. */
-    private static boolean hasNaN(List<Float> vector) {
-        return vector.stream().anyMatch(x -> x.isNaN());
-    }
-
-    /** Checks if any coordinate of a vector is infinite. */
-    private static boolean hasInfinity(List<Float> vector) {
-        return vector.stream().anyMatch(x -> x.isInfinite());
-    }
-
-    /** Computes the dot product of a vector with itself. */
-    private static float normSquared(List<Float> vector) {
-        var computed = vector.stream()
-            .mapToDouble(x -> x)
-            .map(x -> x * x)
-            .sum();
-
-        return (float)computed;
     }
 }
