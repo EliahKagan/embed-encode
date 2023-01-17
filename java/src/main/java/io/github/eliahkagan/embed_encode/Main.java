@@ -100,6 +100,6 @@ public class Main {
         new ObjectMapper()
             .enable(SerializationFeature.INDENT_OUTPUT)
             .writer(printer)
-            .writeValue(new File("java-embeddings.json"), doubles);
+            .writeValue(new File("java-embedding.json"), doubles);
     }
 }
