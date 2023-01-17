@@ -1,5 +1,12 @@
 package io.github.eliahkagan.embed_encode;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -82,9 +89,18 @@ public class Main {
      * Convert coordinates to a List of doubles, show them, and save as JSON.
      * <p>This is to compare to Python results. See python/ada-002.ipynb.</p>
      * @param coordinates  The float coordinates of the embedding.
+     * @throws IOException  If the json file cannot be written.
      */
-    private static void reportDoubles(List<Float> coordinates) {
+    private static void reportDoubles(List<Float> coordinates) throws IOException {
         var doubles = new VectorQuery(coordinates).doubles();
         System.out.println(doubles);
+
+        var printer = new DefaultPrettyPrinter()
+            .withArrayIndenter(new DefaultIndenter("    ", "\n"));
+
+        new ObjectMapper()
+            .enable(SerializationFeature.INDENT_OUTPUT)
+            .writer(printer)
+            .writeValue(new File("java-embeddings.json"), doubles);
     }
 }
