@@ -8,13 +8,21 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        // Determine what text we are going to embed.
         var text = getTextToEmbed(args);
         System.out.println(text);
 
+        // Embed it, and report the result.
         var embedding = new Embedder(getApiKey()).embed(text);
         System.out.println(embedding.base64());
         System.out.println(embedding.coordinates());
         reportDetails(embedding.coordinates());
+
+        // Convert it to double (float64), for comparison to Python.
+        var doubles = embedding.coordinates().stream()
+            .map(Double::valueOf)
+            .toList();
+        System.out.println(doubles);
     }
 
     /**
