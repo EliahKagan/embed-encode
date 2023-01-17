@@ -12,9 +12,9 @@ import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -28,8 +28,10 @@ public class Main {
         System.out.format("norm squared = %.8f%n", normSquared(embedding));
     }
 
-    private static final int DIMENSION = 1536;
+    /** Expected dimension for text-embedding-ada-002. */
+    private static final int EXPECTED_DIMENSION = 1536;
 
+    /** Content-Type for the HTTP request. */
     private static final MediaType JSON
         = MediaType.get("application/json; charset=utf-8");
 
@@ -40,18 +42,24 @@ public class Main {
     }
 
     private static List<Float> embed(String text) throws IOException {
+        // Query the OpenAI API for binary data (transmitted as Base64).
         var result = queryApi(text);
         var base64 = result.data().get(0).embedding();
         System.out.println(base64); // FIXME: Remove after debugging.
         var bytes = Base64.getDecoder().decode(base64);
 
+        // View the raw binary data as floats (IEEE 754 binary32).
         var byteBuffer = ByteBuffer.wrap(bytes);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         var floatBuffer = byteBuffer.asFloatBuffer();
+        assertDimension(floatBuffer.remaining());
 
-        return IntStream.range(0, DIMENSION)
-            .mapToObj(floatBuffer::get)
-            .toList();
+        // Copy the floats in the buffer to a List representing an embedding.
+        List<Float> embedding = new ArrayList<>(floatBuffer.remaining());
+        while (floatBuffer.hasRemaining()) {
+            embedding.add(floatBuffer.get());
+        }
+        return embedding;
     }
 
     private static Result queryApi(String text) throws IOException {
@@ -84,6 +92,17 @@ public class Main {
         }
 
         return key.strip();
+    }
+
+    private static void assertDimension(int actualDimension) {
+        if (actualDimension == EXPECTED_DIMENSION) return;
+
+        var message = String.format(
+            "expected dimension %d, got %d",
+            EXPECTED_DIMENSION,
+            actualDimension);
+
+        throw new AssertionError(message);
     }
 
     private static boolean hasNaN(List<Float> vector) {
