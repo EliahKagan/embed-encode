@@ -39,10 +39,11 @@ fully detailed explanation of this.
 
 The example code in this repository is in three directories:
 
-- [In Bash](bash/README.md), using [`curl`](https://curl.se/docs/manpage.html),
+- [In Bash](shell/README.md), using
+  [`curl`](https://curl.se/docs/manpage.html),
   [`jq`](https://stedolan.github.io/jq/manual/), and
   [`base64`](https://linux.die.net/man/1/base64). See the shell scripts
-  [`demo`](bash/demo) and [`demo-short`](bash/demo-short).
+  [`demo`](shell/demo) and [`demo-short`](shell/demo-short).
 
 - [In Python](python/README.md), using
   [Requests](https://requests.readthedocs.io/en/latest/). See the notebooks
