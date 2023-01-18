@@ -276,10 +276,11 @@ at any time.**
 This repository shows ways to retrieve Base64-encoded embeddings by explicitly
 requesting them from the API endpoint, in three languages:
 
-- [In Bash](bash/README.md), using [`curl`](https://curl.se/docs/manpage.html),
+- [In Bash](shell/README.md), using
+  [`curl`](https://curl.se/docs/manpage.html),
   [`jq`](https://stedolan.github.io/jq/manual/), and
   [`base64`](https://linux.die.net/man/1/base64). See the shell scripts
-  [`demo`](bash/demo) and [`demo-short`](bash/demo-short).
+  [`demo`](shell/demo) and [`demo-short`](shell/demo-short).
 
 - [In Python](python/README.md), using
   [Requests](https://requests.readthedocs.io/en/latest/). See the notebooks
