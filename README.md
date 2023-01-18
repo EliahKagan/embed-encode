@@ -27,7 +27,10 @@ for details.
 
 ## Acknowledgements
 
-*Forthcoming.*
+These materials arose out of conversations with **RonaldGRuckus** on the OpenAI
+Discord server. If not for Ronald's observations about embeddings from the
+Python library, and the conversations that followed, this repository and its
+contents would not exist.
 
 ## Contents
 
