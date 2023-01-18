@@ -62,12 +62,12 @@ final class Embedder {
         assertDimension(floatBuffer.remaining());
 
         // Copy the floats in the buffer to a List representing an embedding.
-        List<Float> embedding = new ArrayList<>(floatBuffer.remaining());
+        List<Float> coordinates = new ArrayList<>(floatBuffer.remaining());
         while (floatBuffer.hasRemaining()) {
-            embedding.add(floatBuffer.get());
+            coordinates.add(floatBuffer.get());
         }
 
-        return new Base64Embedding(base64, embedding);
+        return new Base64Embedding(base64, coordinates);
     }
 
     /** Expected dimension for text-embedding-ada-002. */
