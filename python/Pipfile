@@ -9,6 +9,7 @@ ipykernel = "*"
 numpy = "*"
 openai = "*"
 requests = "*"
+tabulate = "*"
 matplotlib = "*"
 pandas = "*"
 plotly = "*"
@@ -17,6 +18,9 @@ scipy = "*"
 tenacity = "*"
 
 [dev-packages]
+flake8 = "*"
+mypy = "*"
+pyright = "*"
 
 [requires]
 python_version = "3.11"
