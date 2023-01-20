@@ -43,5 +43,5 @@ def get_api_key():
 
     pathname = pathlib.Path(__file__).parent.parent / '.api_key'
 
-    with open(pathname,encoding='utf-8') as file:
+    with open(pathname, encoding='utf-8') as file:
         return file.read().strip()
