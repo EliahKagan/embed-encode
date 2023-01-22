@@ -11,3 +11,6 @@ requests in which the OpenAI embeddings API endpoint happened to process them
 the same way. The point here is only to show how the language one uses doesn't
 affect the results, if one is careful. But other factors, which vary across
 separate runs even using the same exact client code, do affect them.
+
+Finally, the only `bundler`/`gem` dependencies are for static analysis. To just
+run the script, you can ignore them.
