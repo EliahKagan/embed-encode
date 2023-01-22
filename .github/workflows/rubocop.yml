@@ -24,10 +24,6 @@ jobs:
       with:
         ruby-version: 3.1
 
-    # FIXME: Add to Gemfile instead of specifying it here.
-    - name: Install Code Scanning integration
-      run: bundle add code-scanning-rubocop --version 0.6.1 --skip-install
-
     - name: Install dependencies
       run: bundle install
 
