@@ -14,3 +14,15 @@ separate runs even using the same exact client code, do affect them.
 
 Finally, the only `bundler`/`gem` dependencies are for static analysis. To just
 run the script, you can ignore them.
+
+To do the comparison, run `check.rb` with no arguments:
+
+```sh
+./check.rb
+```
+
+On Windows, you'll have to use the `ruby` command explicitly:
+
+```powershell
+ruby check.rb
+```
