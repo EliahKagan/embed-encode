@@ -29,7 +29,6 @@ jobs:
 
     - name: Rubocop run
       run: |
-        printf 'WORKING DIRECTORY: %s\n' "$(pwd)"  # FIXME: Remove after debugging.
         bash -c "
           bundle exec rubocop --require code_scanning --format CodeScanning::SarifFormatter -o rubocop.sarif
           [[ $? -ne 2 ]]
@@ -38,4 +37,4 @@ jobs:
     - name: Upload Sarif output
       uses: github/codeql-action/upload-sarif@v2
       with:
-        sarif_file: rubocop.sarif
+        sarif_file: compare/rubocop.sarif
