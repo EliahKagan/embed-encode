@@ -5,15 +5,15 @@ on: [push, pull_request]
 jobs:
   rubocop:
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
     strategy:
       fail-fast: false
     defaults:
       run:
-        working-directory: ./compare
-    permissions:
-      contents: read
-      security-events: write
-      pull-requests: read
+        working-directory: compare
 
     steps:
     - name: Checkout repository
