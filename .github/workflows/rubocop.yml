@@ -29,6 +29,7 @@ jobs:
 
     - name: Rubocop run
       run: |
+        printf 'WORKING DIRECTORY: %s\n' "$(pwd)"  # FIXME: Remove after debugging.
         bash -c "
           bundle exec rubocop --require code_scanning --format CodeScanning::SarifFormatter -o rubocop.sarif
           [[ $? -ne 2 ]]
