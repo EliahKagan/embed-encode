@@ -2,6 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    code-scanning-rubocop (0.6.1)
+      rubocop (~> 1.0)
     json (2.6.3)
     parallel (1.22.1)
     parser (3.2.0.0)
@@ -28,6 +30,7 @@ PLATFORMS
   x64-mingw-ucrt
 
 DEPENDENCIES
+  code-scanning-rubocop (~> 0.6.1)
   rubocop (~> 1.43)
 
 BUNDLED WITH
