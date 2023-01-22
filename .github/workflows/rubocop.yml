@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
     defaults:
       run:
-        working-directory: compare
+        working-directory: ./compare
 
     steps:
     - name: Checkout repository
