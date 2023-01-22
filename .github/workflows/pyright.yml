@@ -1,0 +1,13 @@
+name: pyright Typecheck
+
+on: [push, pull_request]
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    name: Typecheck
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v3
+      - name: pyright Typecheck
+        uses: jakebailey/pyright-action@v1

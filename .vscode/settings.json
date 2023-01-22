@@ -1,0 +1,6 @@
+{
+    "editor.detectIndentation": false,
+    "[ruby]": {
+        "editor.tabSize": 2
+    },
+}

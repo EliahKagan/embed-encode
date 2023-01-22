@@ -24,7 +24,7 @@ import os
 import pathlib
 
 
-def get_api_key():
+def get_api_key() -> str:
     """
     Get the user's OpenAI API key.
 
@@ -35,8 +35,8 @@ def get_api_key():
       2. The ``.api_key`` file in the repository root.
 
     Note that the API key must NOT be committed to this repository! However, if
-    the filename .api_key is excluded in .gitignore to prevent it from being
-    committed, then that is acceptable, at least in development scenarios.
+    the filename ``.api_key`` is excluded in ``.gitignore`` to keep it from
+    being committed, then that's okay, at least in development scenarios.
     """
     if api_key := os.getenv('OPENAI_API_KEY', default='').strip():
         return api_key

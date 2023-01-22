@@ -10,6 +10,7 @@ dependencies:
   - numpy
   - openai
   - requests
+  - tabulate
 
   # For openai.embeddings_utils (move above if used directly)
   - matplotlib
@@ -18,3 +19,8 @@ dependencies:
   - scikit-learn
   - scipy
   - tenacity
+
+  # Development tools
+  - flake8
+  - mypy
+  - pyright

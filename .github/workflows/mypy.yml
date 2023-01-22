@@ -1,0 +1,15 @@
+name: mypy Typecheck
+
+on: [push, pull_request]
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    name: Typecheck
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v3
+      - name: mypy Typecheck
+        uses: jpetrucciani/mypy-check@master
+        with:
+          python_version: "3.11"
