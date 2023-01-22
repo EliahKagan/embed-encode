@@ -5,16 +5,16 @@
 Displaying coordinates of text embeddings retrieved using the OpenAI Python
 library shows more digits than when the embeddings are retrieved explicitly
 from the API endpoint or using most other libraries. This repository explores
-why that is, how to get that behavior from other languages, and why one should
-not usually bother to do so.
+why that is, how to get this behavior (and by the same mechanism) when working
+in other languages, and why one should not usually bother to do so.
 
 More specifically, this repository is a collection of code examples and
 documentation for the `encoding_format` argument to the OpenAI embeddings API,
 which, when set to `base64`, will send raw floats encoded in Base64. The OpenAI
 Python library uses that under the hood.
 
-Beware that `encoding_format` appears not to be officially documented. It could
-be removed or changed in the future!
+Beware that `encoding_format` is not officially documented. It could be removed
+or changed in the future!
 
 ## License
 
@@ -60,10 +60,12 @@ The example code in this repository is in three directories:
 
 Note that the reason to use `encoding_format`, if there is one, would not
 ordinarily be increased precision, but instead the optimization in speed and
-network usage, which appears to be why the OpenAI Python library uses it.
+network usage, which [appears to be why](why.md#why-it-is-an-optimization) the
+OpenAI Python library uses it.
 
-Furthermore, to reiterate the above warning, `encoding_format` appears not to
-be officially documented, and it could potentially be removed, or changed, at
-any point in the future. The OpenAI Python library's source code shows how one
-might approach using it in a way that partially avoids depending on its future
-existence.
+Furthermore, to reiterate the above warning, `encoding_format` is not
+officially documented, and it could potentially be removed, or changed, at any
+point in the future. The OpenAI Python library's source code [shows
+how](https://github.com/openai/openai-python/blob/v0.26.1/openai/api_resources/embedding.py#L40)
+one might approach using it in a way that partially avoids depending on its
+future existence.

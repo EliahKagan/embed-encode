@@ -17,7 +17,9 @@ trailing nonzero digits. Details follow.
 The coordinates in most text embeddings, including all embeddings from OpenAI
 embedding models, are
 [float32](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
-(single precision). So they have 6 to 9 significant figures, though [rarely
+(single precision). So they have [6 to
+9](https://en.wikipedia.org/wiki/Single-precision_floating-point_format#IEEE_754_standard:_binary32)
+significant figures, though [rarely
 9](https://stackoverflow.com/questions/60790120/which-single-precision-floating-point-numbers-need-9-significant-decimal-digits).
 
 When using the OpenAI embeddings API endpoint explicitly via its [documented
@@ -30,17 +32,25 @@ numbers. Although the embeddings are originally in
 binary again when we use them, they are, in effect, transmitted in
 [decimal](https://en.wikipedia.org/wiki/Decimal).
 
-I *believe* they are always represented with sufficient precision in this
-process. Since they are floating point values, we [count from the first nonzero
+They are represented with sufficient precision in this process. Precision is
+not lost in the server-side conversion from binary to decimal. We can infer
+this with reasonable confidence by examination. Because embeddings' coordinates
+are floating point values, we [count from the first nonzero
 digit](https://en.wikipedia.org/wiki/Significand) to determine the precision of
-a representation. Counting this way, most coordinates from the API endpoint are
-transmitted with 8 figures. Some have fewer, but that's probably just when the
-eighth digit would be a 0. [Less than 2%](https://stackoverflow.com/a/60790121)
-of floating point values (in the whole range of float32) need 9 digits to
-support exact round-trip conversion. My guess is that, if one looks for numbers
-with 9-digit significands in the JSON results, one may find them.
+a representation. Counting this way:
 
-Of equal or greater importance is that embeddings probably don't need full
+- Most coordinates from the API endpoint are transmitted with 8 figures.
+
+- Some have fewer, because trailing zeros are omitted.
+
+- A few have 9 figures. [Less than 2%](https://stackoverflow.com/a/60790121) of
+  all float32 values need 9 digits to support exact round-trip conversion, and
+  we see 9-figure coordinates as (in)frequently as we would expect. It's hard
+  to notice the 9-figure coordinates by manually inspecting raw JSON from the
+  API endpoint, since there are so few of them, but part of
+  [`ada-002.ipynb`](python/ada-002.ipynb) parses and displays them.
+
+Of equal or greater importance is that embeddings probably wouldn't need full
 float32 precision:
 
 - Embeddings are inherently fuzzy.
@@ -98,8 +108,9 @@ instead!
 If we follow that two-step process and then represent those float64 values in
 decimal, we see extra digits. The extra digits correspond to the difference
 between the decimal representations of the float32 values and the original
-float32 values themselves. Note that this assumes perfect round-tripping;
-otherwise, we have no way to know the original float32 values exactly.
+float32 values themselves. Note that this only holds when we have perfect
+round-tripping; otherwise, we would have no way to know the original float32
+values exactly.
 
 ### Trying it out in the Python REPL
 
@@ -115,8 +126,8 @@ represented as 0.033652876. This is a round-trip representation:
 ```
 
 Like all round-trip representations of a float32, it is also a round-trip
-representation of a float64 (though, as explained above, this is a slightly
-different float64):
+representation of a float64—though, as explained above, this is a slightly
+different float64:
 
 ```python
 >>> float('0.033652876')
@@ -163,6 +174,20 @@ Therefore, OpenAI could, at some point in the future, drop support for
 `encoding_format` from the API endpoint, even without (or before) releasing a
 patch to the Python library.
 
+### Why it is an optimization
+
+The reason this is useful as an optimization, even though it has no effect on
+rounding error, is that:
+
+- Encoding a block of raw binary float32 values in Base64 is more compact than
+  writing them out as a JSON array of numbers. As a JSON array, of numbers,
+  each digit takes up a whole byte even though there are only 10 possible
+  digits, and extra space is taken up by commas and newlines. This may require
+  less data to be transferred.
+
+- The computations to encode and decode Base64 should require less processing
+  than those to convert between decimal and binary.
+
 ### How the OpenAI Python library retrieves embeddings
 
 There are two ways to use the OpenAI Python library to get embeddings:
@@ -201,7 +226,7 @@ recognize that as a [flat
 sequence](https://www.fluentpython.com/lingo/#flat_sequence) of float32 values,
 making a NumPy array of them. Then it converts that NumPy array to a Python
 `list`, which converts the float32 values to Python `float`. As [mentioned
-above](#Trying-it-out-in-the-Python-REPL), Python's `float` type is in practice
+above](#trying-it-out-in-the-python-repl), Python's `float` type is in practice
 always float64.
 
 ### The actual code that does this
@@ -266,12 +291,34 @@ repository.
 ## To receive and decode Base64 yourself...
 
 The float64 values you get from the OpenAI Python library are being produced
-because Python has no built-in float32 type, not because the extra precision
-would usually be helpful. But if you like, you can use the same technique
-`openai.Embedding.create` uses: when accessing the API endpoint directly,
-specify `'encoding_format': 'base64'` and decode the results yourself. **Note
-that this does not appear to be officially supported, so your code could break
-at any time.**
+because Python has no built-in float32 type, *not* because it would ordinarily
+be necessary to represent each coordinate in float64 with a value exactly equal
+to the original float32 coordinate. The difference in precision is less than
+the precision of the original float32 values, after all. Furthermore, because
+the decimal numbers transmitted as a JSON list introduce no loss of precision,
+an alternative way to get the same results the Python library gives is to parse
+the raw JSON list as float32 initially, and then convert that to float64.
+
+### Passing `base64` as `encoding_format`
+
+*But if you like*, you can use the same technique `openai.Embedding.create`
+uses: when accessing the API endpoint directly, specify `'encoding_format':
+'base64'` and decode the results yourself. You might do this to avail yourself
+of its value [as an optimization](#why-it-is-an-optimization), though you
+should consider if it's really worth it.
+
+**Note that this is not officially supported, so your code could break at any
+time.**
+
+If you ever decide it is worthwhile to do this in production code, then you
+should make sure to support the possibility that the API endpoint will remove
+support for the feature, at least as robustly [as the OpenAI Python library
+does](https://github.com/openai/openai-python/blob/v0.26.1/openai/api_resources/embedding.py#L40).
+
+(Of course, if OpenAI documents `encoding_format` in the future, some of these
+warnings may become obsolete.)
+
+### Examples
 
 This repository shows ways to retrieve Base64-encoded embeddings by explicitly
 requesting them from the API endpoint, in three languages:
@@ -294,5 +341,5 @@ requesting them from the API endpoint, in three languages:
   [`Main.java`](java/src/main/java/io/github/eliahkagan/embed_encode/Main.java)
   for use).
 
-There is also [a comparison](compare/README.md) of the results of OpenAI Python
-library and the Java code in this repository, after conversion to float64.
+There is also [a comparison](compare/README.md) of results from the OpenAI
+Python library to results from the Java code in this repository.
