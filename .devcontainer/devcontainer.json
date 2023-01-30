@@ -1,0 +1,20 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
+    "features": {
+        "ghcr.io/rocker-org/devcontainer-features/miniforge:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bierner.markdown-preview-github-styles",
+                "eamodio.gitlens",
+                "mhutchie.git-graph",
+                "ms-vsliveshare.vsliveshare",
+                "streetsidesoftware.code-spell-checker"
+            ],
+            "settings": {
+                "python.terminal.activateEnvironment": false
+            }
+        }
+    }
+}
