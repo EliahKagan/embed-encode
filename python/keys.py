@@ -23,25 +23,30 @@ __all__ = ['get_api_key']
 import os
 import pathlib
 
+_KEY_VAR_NAMES = ('OPENAI_API_KEY_EMBEDENCODE', 'OPENAI_API_KEY')
+"""Names of environment variables to look in for the OpenAI API key."""
+
 
 def get_api_key() -> str:
     """
     Get the user's OpenAI API key.
 
-    Two places are searched, in this order:
+    Three places are searched, in this order:
 
-      1. The content of the ``$OPENAI_API_KEY`` environment variable.
+      1. The ``$OPENAI_API_KEY_EMBEDENCODE`` environment variable.
 
-      2. The ``.api_key`` file in the repository root.
+      2. The ``$OPENAI_API_KEY`` environment variable.
+
+      3. The ``.api_key`` file in the repository root.
 
     Note that the API key must NOT be committed to this repository! However, if
     the filename ``.api_key`` is excluded in ``.gitignore`` to keep it from
     being committed, then that's okay, at least in development scenarios.
     """
-    if api_key := os.getenv('OPENAI_API_KEY', default='').strip():
-        return api_key
+    for name in _KEY_VAR_NAMES:
+        if api_key := os.getenv(name, default='').strip():
+            return api_key
 
     pathname = pathlib.Path(__file__).parent.parent / '.api_key'
-
     with open(pathname, encoding='utf-8') as file:
         return file.read().strip()
