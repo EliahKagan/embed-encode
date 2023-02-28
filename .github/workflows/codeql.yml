@@ -55,10 +55,6 @@ jobs:
       with:
         python-version: '3.11'
 
-    - if: matrix.language == 'python'
-      name: Help CodeQL find Python dependencies
-      run: ln -st . python/Pipfile{,.lock}
-
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
