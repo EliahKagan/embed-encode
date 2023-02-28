@@ -55,6 +55,12 @@ jobs:
       with:
         python-version: '3.11'
 
+    - if: matrix.language == 'python'
+      name: Install Python dependencies
+      run: |
+        cd python
+        pipenv install
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
