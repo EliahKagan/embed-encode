@@ -56,6 +56,14 @@ jobs:
         python-version: '3.11'
 
     - if: matrix.language == 'python'
+      name: Update PyPA packages
+      run: pip install -U pip setuptools wheel
+
+    - if: matrix.language == 'python'
+      name: Install pipenv
+      run: pip install -U pipenv
+
+    - if: matrix.language == 'python'
       name: Install Python dependencies
       run: |
         cd python
