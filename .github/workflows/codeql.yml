@@ -49,6 +49,10 @@ jobs:
         distribution: 'temurin'
         java-version: 19
 
+    - if: matrix.language == 'python'
+      name: Help CodeQL find dependencies
+      run: ln -st . python/Pipfile{,.lock}
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
