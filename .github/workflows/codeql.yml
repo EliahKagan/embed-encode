@@ -42,7 +42,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     
-    - name: Setup Java JDK
+    - if: matrix.language == java
+      name: Setup Java JDK
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
