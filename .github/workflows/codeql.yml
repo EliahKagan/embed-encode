@@ -49,6 +49,26 @@ jobs:
         distribution: 'temurin'
         java-version: 19
 
+    - if: matrix.language == 'python'
+      name: Set up Python environment
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - if: matrix.language == 'python'
+      name: Update PyPA packages
+      run: pip install -U pip setuptools wheel
+
+    - if: matrix.language == 'python'
+      name: Install pipenv
+      run: pip install -U pipenv
+
+    - if: matrix.language == 'python'
+      name: Determine Python dependencies
+      run: |
+        cd python
+        pipenv requirements >../requirements.txt
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v2
