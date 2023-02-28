@@ -42,7 +42,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     
-    - if: matrix.language == java
+    - if: matrix.language == 'java'
       name: Setup Java JDK
       uses: actions/setup-java@v3
       with:
