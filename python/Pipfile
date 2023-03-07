@@ -7,15 +7,9 @@ name = "pypi"
 cheap-repr = "*"
 ipykernel = "*"
 numpy = "*"
-openai = "*"
+openai = {extras = ["embeddings"], version = "*"}
 requests = "*"
 tabulate = "*"
-matplotlib = "*"
-pandas = "*"
-plotly = "*"
-scikit-learn = "*"
-scipy = "*"
-tenacity = "*"
 
 [dev-packages]
 flake8 = "*"
