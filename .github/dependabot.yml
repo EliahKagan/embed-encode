@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "pip"
     directory: "/python"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     allow:
       - dependency-type: "all"
     open-pull-requests-limit: 20
@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: "bundler"
     directory: "/compare"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     allow:
       - dependency-type: "all"
     open-pull-requests-limit: 20
