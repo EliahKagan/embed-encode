@@ -6,8 +6,10 @@ GEM
       rubocop (~> 1.0)
     json (2.6.3)
     parallel (1.23.0)
-    parser (3.2.2.1)
+    parser (3.2.2.3)
       ast (~> 2.4.1)
+      racc
+    racc (1.7.1)
     rainbow (3.1.1)
     regexp_parser (2.8.0)
     rexml (3.2.5)
