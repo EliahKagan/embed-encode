@@ -9,7 +9,7 @@ dependencies:
   - ipykernel
   - numpy
   - openai
-  - requests
+  - requests>=2.31.0
   - tabulate
 
   # Development tools
