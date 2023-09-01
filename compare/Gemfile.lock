@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    base64 (0.1.1)
     code-scanning-rubocop (0.6.1)
       rubocop (~> 1.0)
     json (2.6.3)
@@ -14,7 +15,8 @@ GEM
     rainbow (3.1.1)
     regexp_parser (2.8.1)
     rexml (3.2.6)
-    rubocop (1.55.1)
+    rubocop (1.56.2)
+      base64 (~> 0.1.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
@@ -36,7 +38,7 @@ PLATFORMS
 
 DEPENDENCIES
   code-scanning-rubocop (~> 0.6.1)
-  rubocop (~> 1.51)
+  rubocop (~> 1.56)
 
 BUNDLED WITH
    2.3.5
