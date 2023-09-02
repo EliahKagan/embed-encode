@@ -20,36 +20,42 @@
 #
 # If the text to embed is omitted, a sample phrase is used instead.
 #
-# This script is just a demonstration. It is vulnerable to JSON injection and
-# thus unsuitable for use on untrusted input: if the input contains a '"'
-# character, then what comes after it can specify arbitrary JSON. This could be
-# exploited in undesirable ways, such as to specify a more expensive model.
-#
-# The other reason the code in this script probably couldn't be used unchanged
-# in production is that it assumes the request succeeds. If the request fails,
+# As written, this script assumes the request succeeds. If the request fails,
 # whatever it returned is nonetheless treated as a sequence of coordinates.
 
 set -e
 
 api_key() {
     local key="$OPENAI_API_KEY"
-    [ -n "$key" ] || key="$(<../.api_key)" # Fall back to reading .api_key.
+    [ -n "$key" ] || key="$(<../.api_key)"  # Fall back to reading .api_key.
     printf '%s\n' "$key"
 }
 
 # Compare https://beta.openai.com/docs/guides/embeddings/how-to-get-embeddings.
 # (In "Example: Getting embeddings", select "curl" instead of "python".)
+# Requires curl and jq to be installed.
 make_request() {
     local text="$*"
     printf '%s\n\n' "$text" >&2
 
+    # Build the JSON with jq --arg, since building it with parameter expansion
+    # results in a JSON injection vulnerability where the input text could
+    # contain a sequence like '", "injected_key": "injected_value'. Because
+    # input_text is a jq variable, not a shell variable, we must use single
+    # quotes around the code, so the shell doesn't expand $input_text. (We can
+    # call both 'text' but then if we mistakenly used double quotes, everything
+    # would seem to work but we'd get the injection bug we're trying to avoid.)
+    jq -n --arg input_text "$text" '{
+        "input": $input_text,
+        "model": "text-embedding-ada-002",
+        "encoding_format": "base64"
+    }' |
+    # Make the API call with the safely jq-constructed JSON.
     curl https://api.openai.com/v1/embeddings \
         -X POST \
         -H "Authorization: Bearer $(api_key)" \
         -H "Content-Type: application/json" \
-        -d '{"input": "'"$text"'",
-            "model": "text-embedding-ada-002",
-            "encoding_format": "base64"}'
+        -d @-
 
     printf '\n' >&2
 }

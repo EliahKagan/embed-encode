@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: 0BSD
-# Like demo, this script (demo-short) shouldn't be used on untrusted input.
+#
+# This script (demo-short) shouldn't be used on untrusted input, because of the
+# way parameter expansion is used in the curl -d "..." operand. This is to show
+# what the API call looks like, but it is insecure to do it this way unless you
+# have total control over the input. Instead, use "jq --arg" or a similar
+# technique to build the input, as shown in the "demo" (non-short) script.
 
 make_request() {
     curl https://api.openai.com/v1/embeddings \
