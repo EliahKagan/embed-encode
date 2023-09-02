@@ -23,12 +23,12 @@
 # As written, this script assumes the request succeeds. If the request fails,
 # whatever it returned is nonetheless treated as a sequence of coordinates.
 
-set -e
+set -eu
 
+# Write the OpenAI API key to standard output. (Because the key is sensitive,
+# this should typically be redirected, piped, or used in command substitution.)
 api_key() {
-    local key="$OPENAI_API_KEY"
-    [ -n "$key" ] || key="$(<../.api_key)"  # Fall back to reading .api_key.
-    printf '%s\n' "$key"
+    printf '%s\n' "${OPENAI_API_KEY:-$(<../.api_key)}"
 }
 
 # Compare https://beta.openai.com/docs/guides/embeddings/how-to-get-embeddings.
