@@ -180,10 +180,10 @@ The reason this is useful as an optimization, even though it has no effect on
 rounding error, is that:
 
 - Encoding a block of raw binary float32 values in Base64 is more compact than
-  writing them out as a JSON array of numbers. As a JSON array, of numbers,
-  each digit takes up a whole byte even though there are only 10 possible
-  digits, and extra space is taken up by commas and newlines. This may require
-  less data to be transferred.
+  writing them out as a JSON array of numbers. As a JSON array of numbers, each
+  digit takes up a whole byte even though there are only 10 possible digits,
+  and extra space is taken up by commas and newlines. This may require less
+  data to be transferred.
 
 - The computations to encode and decode Base64 should require less processing
   than those to convert between decimal and binary.
