@@ -326,7 +326,7 @@ requesting them from the API endpoint, in three languages:
 - [In Bash](shell/README.md), using
   [`curl`](https://curl.se/docs/manpage.html),
   [`jq`](https://stedolan.github.io/jq/manual/), and
-  [`base64`](https://linux.die.net/man/1/base64). See the shell scripts
+  [`base64`](https://ss64.com/bash/base64.html). See the shell scripts
   [`demo`](shell/demo) and [`demo-short`](shell/demo-short).
 
 - [In Python](python/README.md), using
