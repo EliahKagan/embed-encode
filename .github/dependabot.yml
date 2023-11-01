@@ -7,6 +7,9 @@ updates:
     allow:
       - dependency-type: "all"
     open-pull-requests-limit: 20
+    groups:
+      python-dependencies:
+        patterns: ['*']
 
   - package-ecosystem: "maven"
     directory: "/java"
@@ -15,6 +18,9 @@ updates:
     allow:
       - dependency-type: "all"
     open-pull-requests-limit: 20
+    groups:
+      java-dependencies:
+        patterns: ['*']
 
   - package-ecosystem: "bundler"
     directory: "/compare"
@@ -23,6 +29,9 @@ updates:
     allow:
       - dependency-type: "all"
     open-pull-requests-limit: 20
+    groups:
+      ruby-dependencies:
+        patterns: ['*']
 
   - package-ecosystem: "github-actions"
     directory: "/"
