@@ -8,6 +8,6 @@ jobs:
     name: Typecheck
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: pyright Typecheck
         uses: jakebailey/pyright-action@v2

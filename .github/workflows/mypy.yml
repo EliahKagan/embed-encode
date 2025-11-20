@@ -8,7 +8,7 @@ jobs:
     name: Typecheck
     steps:
       - name: Check out source repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: mypy Typecheck
         uses: jpetrucciani/mypy-check@master
         with:
